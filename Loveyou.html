@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Valentine 💖</title>
+<style>
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  text-align:center;
+  background: linear-gradient(135deg,#ff7ab2,#ff4d8d);
+  color:white;
+  overflow-x:hidden;
+}
+
+.container{
+  padding:30px;
+}
+
+button{
+  padding:10px 20px;
+  margin:10px;
+  border:none;
+  border-radius:25px;
+  cursor:pointer;
+  font-size:16px;
+}
+
+.hidden{ display:none; }
+
+img{
+  width:250px;
+  border-radius:15px;
+  margin-top:15px;
+}
+
+.section{
+  margin-top:30px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1 id="title"></h1>
+  <p id="subtitle"></p>
+   <button id="yesBtn"></button>
+   <button id="noBtn"></button>
+
+  <div id="successSection" class="hidden section">
+      <h2 id="successMessage"></h2>
+      <p id="successSubtitle"></p>
+      
+      <button onclick="showPhotos()">Photos 📸</button>
+      <button onclick="showSongs()">Songs 🎵</button>
+      <button onclick="showLetter()">Letter 💌</button>
+  </div>
+
+  <div id="photoSection" class="hidden section">
+      <h2>Every Moment with You!📸</h2>
+      <img id="photoDisplay">
+      <p id="photoCaption"></p>
+      <button onclick="prevPhoto()">⬅</button>
+      <button onclick="nextPhoto()">➡</button>
+  </div>
+  <div id="songSection" class="hidden section">
+      <h2>Our Love Sounds Like This!🎵</h2>
+      <img id="songCover">
+      <p id="songTitle"></p>
+      <audio id="audioPlayer" controls></audio><br>
+      <button onclick="prevSong()">⬅</button>
+      <button onclick="nextSong()">➡</button>
+  </div>
+
+  <div id="letterSection" class="hidden section">
+      <h2 id="letterTitle"></h2>
+      <p id="letterContent"></p>
+      <p id="signature"></p>
+  </div>
+
+</div>
+
+<script>
+
+/* ===== JSON DATA AS JS OBJECT ===== */
+
+const data = {
+  content: {
+    title: "Will you be my Valentine?",
+    subtitle: "Sudha ",
+    yesButtonText: "YES ❤️",
+    noButtonText: "NO 💔",
+    successMessage: "💖 YAYYYYY!!! 💖",
+    successSubtitle: "Matna da en pambara katta mandaiya.... ❤️😘"
+  },
+  couplePhotos: [
+    { image: "./photo3.jpeg", caption: "I love you Sudha. I will always be with you. I don’t know why we took this picture that day but now it has become my favorite. You are my life" },
+    { image: "./photo6.jpeg", caption: "First time we out together.I was so scared but equally happy. What that lady said came true. Thank you for coming to see me, my best friend 🥹💖✨"},
+    { image: "./photo5.jpeg", caption: "Love you more, my love 🥹❤️👨‍👩‍👧✨💖" }
+  ],
+  songs: [
+     { title: " Trust Me  ", cover: "./photo3.jpeg", audio: "./Yedemaina Sakha (PenduJatt.Com.Se).mp3" },
+     { title: " Sikiram india va plssss...Miss you", cover: "./photo1.jpeg", audio: "./Vennilavu Saaral.mp3" },
+     { title: " Mama", cover: "./photo2.jpeg", audio: "./Aadiyile-Sedhi.mp3" },
+     { title: " Love You Eruma", cover: "./photo4.jpeg", audio: "./Eppadi Vandhaayo.mp3" },
+     { title: " Murugan Kovil Polama ?", cover: "./photo6.jpeg", audio: "./Aagaya-Suriyanai.mp3" },
+     
+  
+  ],
+  letter: {
+    title: "Un kita solra alavuku onnum ila",
+    content: [
+      "Unna romba miss panra ",
+      "Ipola konjo neraya sanda podran sorry but adhukaga sanda podama iruka mata innum neraya poduva.",
+      "unkita neraya pesanum muditu olunga june la vadhuru varama irundha unaku avlodha mariyadha ***",
+      "edhu instala reels la pathu try panlan panna mokkayadha iruku adjust panniko",
+      "Maybe olunga class poirundha better ah panirupen kochikadha next valentine ku better ah pakalam",
+      "Neeyum nalla padi Sikiram Doctor aagidu ",
+      "Anga nalla enjoy pannu frnds kuda ,health ah pathuko",
+      "Unaku kedachadhu nalla frnds avangala miss pannadha ,most importantly Sam & Santhosh ",
+      "Sam Santhosh edha pathu sirika poranga ",
+      "Vera onum ila daily polamburadhudha adhu unake theriyum",
+      "I love u sooooo muchhhhhhhhhhhhhhhhhhhhhhh Sudhaaaaaaaaaaaaaaaa ",
+      "Epo varuva ?????",
+      
+    ],
+    signature: "Forever yours, With love Priya Varadharaj "
+  }
+};
+
+/* ===== INITIAL LOAD ===== */
+
+document.getElementById("title").innerText = data.content.title;
+document.getElementById("subtitle").innerText = data.content.subtitle;
+document.getElementById("yesBtn").innerText = data.content.yesButtonText;
+document.getElementById("noBtn").innerText = data.content.noButtonText;
+
+/* ===== YES BUTTON ===== */
+
+document.getElementById("yesBtn").onclick = function(){
+  document.getElementById("successSection").classList.remove("hidden");
+  document.getElementById("successMessage").innerText = data.content.successMessage;
+  document.getElementById("successSubtitle").innerText = data.content.successSubtitle;
+};
+
+/* ===== NO BUTTON ===== */
+
+document.getElementById("noBtn").onclick = function(){
+  alert("muditu yes click pannu...S 😜 Try again!");
+};
+
+/* ===== PHOTOS ===== */
+
+let photoIndex = 0;
+
+function showPhotos(){
+  hideAll();
+  document.getElementById("photoSection").classList.remove("hidden");
+  loadPhoto();
+}
+
+function loadPhoto(){
+  document.getElementById("photoDisplay").src = data.couplePhotos[photoIndex].image;
+  document.getElementById("photoCaption").innerText = data.couplePhotos[photoIndex].caption;
+}
+
+function nextPhoto(){
+  photoIndex = (photoIndex + 1) % data.couplePhotos.length;
+  loadPhoto();
+}
+
+function prevPhoto(){
+  photoIndex = (photoIndex - 1 + data.couplePhotos.length) % data.couplePhotos.length;
+  loadPhoto();
+}
+
+/* ===== SONGS ===== */
+
+let songIndex = 0;
+
+function showSongs(){
+  hideAll();
+  document.getElementById("songSection").classList.remove("hidden");
+  loadSong();
+}
+
+function loadSong(){
+  document.getElementById("songCover").src = data.songs[songIndex].cover;
+  document.getElementById("songTitle").innerText = data.songs[songIndex].title;
+  document.getElementById("audioPlayer").src = data.songs[songIndex].audio;
+}
+
+function nextSong(){
+  songIndex = (songIndex + 1) % data.songs.length;
+  loadSong();
+}
+
+function prevSong(){
+  songIndex = (songIndex - 1 + data.songs.length) % data.songs.length;
+  loadSong();
+}
+
+/* ===== LETTER ===== */
+
+function showLetter(){
+  hideAll();
+  document.getElementById("letterSection").classList.remove("hidden");
+  document.getElementById("letterTitle").innerText = data.letter.title;
+  document.getElementById("letterContent").innerHTML = data.letter.content.join("<br><br>");
+  document.getElementById("signature").innerHTML = data.letter.signature;
+}
+
+/* ===== HIDE ALL SECTIONS ===== */
+
+function hideAll(){
+  document.getElementById("photoSection").classList.add("hidden");
+  document.getElementById("songSection").classList.add("hidden");
+  document.getElementById("letterSection").classList.add("hidden");
+}
+
+</script>
+
+</body>
+</html>
