@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Valentine 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  text-align:center;
+  background: linear-gradient(135deg,#ff7ab2,#ff4d8d);
+  color:white;
+  overflow-x:hidden;
+}
+
+/* ===== PAGE CONTAINER ===== */
+.page{
+  display:none;
+  padding:30px;
+  min-height:100vh;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.page.active{
+  display:block;
+  opacity:1;
+}
+
+/* ===== BUTTONS ===== */
+button{
+  padding:10px 20px;
+  margin:10px;
+  border:none;
+  border-radius:25px;
+  cursor:pointer;
+  font-size:16px;
+}
+
+/* ===== IMAGES ===== */
+img{
+  width:90%;
+  max-width:400px;
+  border-radius:15px;
+  margin-top:15px;
+}
+
+/* ===== CAPTION ===== */
+.caption{
+  margin-top:10px;
+  font-size:16px;
+}
+
+/* ===== ANIMATIONS ===== */
+
+/* Page 1: Bounce YES button */
+@keyframes bounceIn {
+  0% {transform: scale(0);}
+  50% {transform: scale(1.2);}
+  100% {transform: scale(1);}
+}
+#yesBtn {
+  animation: bounceIn 1s;
+}
+
+/* Page 2: Fade-in Success */
+.fadeIn {
+  animation: fadeInAnim 1s;
+}
+@keyframes fadeInAnim {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+/* Page 3: Zoom-in photo */
+.zoomIn {
+  animation: zoomInAnim 1s;
+}
+@keyframes zoomInAnim {
+  0% {transform: scale(0.5); opacity:0;}
+  100% {transform: scale(1); opacity:1;}
+}
+
+/* Page 4: Slide song cover from left */
+.slideLeft {
+  animation: slideLeftAnim 0.7s;
+}
+@keyframes slideLeftAnim {
+  0% {transform: translateX(-100%); opacity:0;}
+  100% {transform: translateX(0); opacity:1;}
+}
+
+/* Page 5: Slide letter from bottom */
+.slideUp {
+  animation: slideUpAnim 0.7s;
+}
+@keyframes slideUpAnim {
+  0% {transform: translateY(100%); opacity:0;}
+  100% {transform: translateY(0); opacity:1;}
+}
+</style>
+</head>
+<body>
+
+<!-- PAGE 1: YES/NO -->
+<div id="page1" class="page active">
+  <h1 id="title">Will you be my Valentine?</h1>
+  <p id="subtitle">Sudha 💖</p>
+  <button id="yesBtn">YES ❤️</button>
+  <button id="noBtn">NO 💔</button>
+</div>
+
+<!-- PAGE 2: SUCCESS MESSAGE -->
+<div id="page2" class="page">
+  <h2 id="successMessage" class="fadeIn">💖 YAYYYYY!!! 💖</h2>
+  <p id="successSubtitle" class="fadeIn">Matna da en pambara katta mandaiya.... ❤️😘</p>
+  <button onclick="goToPage('page3')">Photos 📸</button>
+  <button onclick="goToPage('page4')">Songs 🎵</button>
+  <button onclick="goToPage('page5')">Letter 💌</button>
+</div>
+
+<!-- PAGE 3: PHOTOS -->
+<div id="page3" class="page">
+  <h2>Every Moment with You! 📸</h2>
+  <img id="photoDisplay" src="" class="zoomIn">
+  <p class="caption" id="photoCaption"></p>
+  <button onclick="prevPhoto()">⬅</button>
+  <button onclick="nextPhoto()">➡</button><br>
+  <button onclick="goToPage('page2')">Back ↩️</button>
+</div>
+
+<!-- PAGE 4: SONGS -->
+<div id="page4" class="page">
+  <h2>Our Love Sounds Like This! 🎵</h2>
+  <img id="songCover" src="" class="slideLeft">
+  <p class="caption" id="songTitle"></p>
+  <audio id="audioPlayer" controls></audio><br>
+  <button onclick="prevSong()">⬅</button>
+  <button onclick="nextSong()">➡</button><br>
+  <button onclick="goToPage('page2')">Back ↩️</button>
+</div>
+
+<!-- PAGE 5: LETTER -->
+<div id="page5" class="page">
+  <h2 id="letterTitle" class="slideUp"></h2>
+  <p id="letterContent" class="slideUp"></p>
+  <p id="signature" class="slideUp"></p>
+  <button onclick="goToPage('page2')">Back ↩️</button>
+</div>
+
+<script>
+/* ===== DATA ===== */
+const data = {
+  couplePhotos: [
+    { image: "./photo3.jpeg", caption: "I love you Sudha. I will always be with you. I don’t know why we took this picture that day but now it has become my favorite. You are my life" },
+    { image: "./photo6.jpeg", caption: "First time we out together. I was so scared but equally happy. What that lady said came true. Thank you for coming to see me, my best friend 🥹💖✨"},
+    { image: "./photo5.jpeg", caption: "Love you more, my love 🥹❤️👨‍👩‍👧✨💖" }
+  ],
+  songs: [
+     { title: "Trust Me", cover: "./photo3.jpeg", audio: "./Yedemaina Sakha (PenduJatt.Com.Se).mp3" },
+     { title: "Sikiram india va plssss...Miss you", cover: "./photo1.jpeg", audio: "./Vennilavu Saaral.mp3" },
+     { title: "Mama", cover: "./photo2.jpeg", audio: "./Aadiyile-Sedhi.mp3" },
+     { title: "Love You Eruma", cover: "./photo4.jpeg", audio: "./Eppadi Vandhaayo.mp3" },
+     { title: "Murugan Kovil Polama?", cover: "./photo6.jpeg", audio: "./Aagaya-Suriyanai.mp3" },
+  ],
+  letter: {
+    title: "Un kita solra alavuku onnum ila",
+    content: [
+      "Unna romba miss panra",
+      "Ipola konjo neraya sanda podran sorry but adhukaga sanda podama iruka mata innum neraya poduva.",
+      "Unkita neraya pesanum muditu olunga june la vadhuru varama irundha unaku avlodha mariyadha ***",
+      "Edhu insta reels la pathu try panlan panna mokkayadha iruku adjust panniko",
+      "Maybe olunga class poirundha better ah panirupen kochikadha next valentine ku better ah pakalam",
+      "Neeyum nalla padi Sikiram Doctor aagidu",
+      "Anga nalla enjoy pannu frnds kuda, health ah pathuko",
+      "Unaku kedachadhu nalla frnds avangala miss pannadha, most importantly Sam & Santhosh",
+      "Sam Santhosh edha pathu sirika poranga",
+      "Vera onum ila daily polamburadhudha adhu unake theriyum",
+      "I love u sooooo muchhhhhhhhhhhhhhhhhhhhhhh Sudhaaaaaaaaaaaaaaaa",
+      "Epo varuva ?????",
+    ],
+    signature: "Forever yours, With love Priya Varadharaj 😘😘😘😘😘😘"
+  }
+};
+
+/* ===== PAGE NAVIGATION ===== */
+function goToPage(pageId){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+
+  // Trigger animations
+  if(pageId==='page3') loadPhoto();
+  if(pageId==='page4') loadSong();
+  if(pageId==='page5') loadLetter();
+}
+
+/* ===== YES / NO BUTTON ===== */
+document.getElementById("yesBtn").onclick = function(){
+  goToPage('page2');
+};
+document.getElementById("noBtn").onclick = function(){
+  alert("muditu yes click pannu...S 😜 Try again!");
+};
+
+/* ===== PHOTOS ===== */
+let photoIndex = 0;
+function loadPhoto(){
+  const img = document.getElementById("photoDisplay");
+  img.src = data.couplePhotos[photoIndex].image;
+  img.classList.remove('zoomIn');
+  void img.offsetWidth; // restart animation
+  img.classList.add('zoomIn');
+  document.getElementById("photoCaption").innerText = data.couplePhotos[photoIndex].caption;
+}
+function nextPhoto(){ photoIndex = (photoIndex + 1) % data.couplePhotos.length; loadPhoto(); }
+function prevPhoto(){ photoIndex = (photoIndex - 1 + data.couplePhotos.length) % data.couplePhotos.length; loadPhoto(); }
+
+/* ===== SONGS ===== */
+let songIndex = 0;
+function loadSong(){
+  const cover = document.getElementById("songCover");
+  cover.src = data.songs[songIndex].cover;
+  cover.classList.remove('slideLeft');
+  void cover.offsetWidth;
+  cover.classList.add('slideLeft');
+  document.getElementById("songTitle").innerText = data.songs[songIndex].title;
+  const audio = document.getElementById("audioPlayer");
+  audio.src = data.songs[songIndex].audio;
+  audio.load();
+  audio.play();
+}
+function nextSong(){ songIndex = (songIndex + 1) % data.songs.length; loadSong(); }
+function prevSong(){ songIndex = (songIndex - 1 + data.songs.length) % data.songs.length; loadSong(); }
+
+/* ===== LETTER ===== */
+function loadLetter(){
+  const title = document.getElementById("letterTitle");
+  const content = document.getElementById("letterContent");
+  const sig = document.getElementById("signature");
+
+  title.innerText = data.letter.title;
+  content.innerHTML = data.letter.content.join("<br><br>");
+  sig.innerHTML = data.letter.signature;
+
+  title.classList.remove('slideUp');
+  content.classList.remove('slideUp');
+  sig.classList.remove('slideUp');
+  void title.offsetWidth;
+  void content.offsetWidth;
+  void sig.offsetWidth;
+  title.classList.add('slideUp');
+  content.classList.add('slideUp');
+  sig.classList.add('slideUp');
+}
+</script>
+</body>
+</html>
